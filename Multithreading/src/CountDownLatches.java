@@ -10,13 +10,15 @@ public class CountDownLatches {
 	 */
 	public static void main(String[] args) {
 		//Wait Till the latch reach 0 ==> Then only proceed 
-		CountDownLatch latch = new CountDownLatch(3);
+		CountDownLatch latch = new CountDownLatch(4);
 
-		ExecutorService executor = Executors.newFixedThreadPool(3);
+		ExecutorService executor = Executors.newFixedThreadPool(4);
 		
-		for(int i=0;i<3;i++) {
+		for(int i=0;i<4;i++) {
 			executor.submit(new Processor3(latch));
 		}
+		
+		executor.shutdown(); //Will shutdown After the task is Completed
 		
 		try {
 			latch.await();//Waits until countDown() reached 0
@@ -41,7 +43,8 @@ class Processor3 implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		System.out.println("Started...");
+		System.out.println("Started..."+"Thread"+Thread.currentThread().getId());
+
 		
 		try {
 			Thread.sleep(3000);
